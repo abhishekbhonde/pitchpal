@@ -58,24 +58,24 @@ export function VoicePlayer({ text, className = '' }: VoicePlayerProps) {
   };
 
   return (
-    <Card className={`${className}`}>
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Voice Pitch</h3>
+    <Card className={`${className} border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg`}>
+      <CardContent className="p-6 lg:p-8">
+        <div className="flex items-center justify-between mb-4 lg:mb-6">
+          <h3 className="text-lg lg:text-xl font-semibold text-gray-900">Voice Pitch</h3>
           <div className="flex items-center space-x-2">
             <Button
               variant="outline"
               size="sm"
               onClick={handleMute}
-              className="p-2"
+              className="p-2 lg:p-3"
             >
-              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              {isMuted ? <VolumeX className="h-4 w-4 lg:h-5 lg:w-5" /> : <Volume2 className="h-4 w-4 lg:h-5 lg:w-5" />}
             </Button>
           </div>
         </div>
         
-        <div className="bg-gray-50 rounded-lg p-4 mb-4">
-          <p className="text-sm text-gray-700 line-clamp-4">
+        <div className="bg-gray-50 rounded-lg p-4 lg:p-6 mb-4 lg:mb-6">
+          <p className="text-sm lg:text-base text-gray-700 line-clamp-4 leading-relaxed">
             {text}
           </p>
         </div>
@@ -84,18 +84,18 @@ export function VoicePlayer({ text, className = '' }: VoicePlayerProps) {
           <Button
             onClick={handlePlayPause}
             disabled={isGenerating}
-            className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+            className="flex items-center space-x-2 lg:space-x-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 py-3 lg:py-4 px-6 lg:px-8 text-base lg:text-lg"
           >
             {isGenerating ? (
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="h-4 w-4 border-2 border-white border-t-transparent rounded-full"
+                className="h-4 w-4 lg:h-5 lg:w-5 border-2 border-white border-t-transparent rounded-full"
               />
             ) : isPlaying ? (
-              <Pause className="h-4 w-4" />
+              <Pause className="h-4 w-4 lg:h-5 lg:w-5" />
             ) : (
-              <Play className="h-4 w-4" />
+              <Play className="h-4 w-4 lg:h-5 lg:w-5" />
             )}
             <span>
               {isGenerating ? 'Generating...' : isPlaying ? 'Pause' : 'Play Voice Pitch'}
@@ -103,7 +103,7 @@ export function VoicePlayer({ text, className = '' }: VoicePlayerProps) {
           </Button>
         </div>
         
-        <p className="text-xs text-gray-500 text-center mt-2">
+        <p className="text-xs lg:text-sm text-gray-500 text-center mt-3 lg:mt-4">
           Powered by AI voice synthesis
         </p>
       </CardContent>
