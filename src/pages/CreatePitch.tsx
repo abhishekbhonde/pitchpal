@@ -7,24 +7,24 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { generatePitchFromIdea } from '@/lib/mockPitchGenerator';
+import { savePitchToSupabase } from '@/lib/supabasePitches';
 import { GeneratedPitch } from '@/types/pitch';
+import { useAuth } from '@/contexts/AuthContext';
 import { Sparkles, Lightbulb, Target, Users, DollarSign, Save } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 export function CreatePitch() {
   const [idea, setIdea] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [generatedPitch, setGeneratedPitch] = useState<GeneratedPitch | null>(null);
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleGenerate = async () => {
     if (!idea.trim()) {
-      toast({
-        title: "Please enter your startup idea",
-        description: "Describe your startup idea to generate a pitch.",
-        variant: "destructive"
-      });
+      toast.error('Please enter your startup idea');
       return;
     }
 
@@ -32,42 +32,28 @@ export function CreatePitch() {
     try {
       const pitch = await generatePitchFromIdea(idea);
       setGeneratedPitch(pitch);
-      toast({
-        title: "Pitch generated successfully!",
-        description: "Your AI-powered pitch is ready. Review and save it to your dashboard."
-      });
+      toast.success('Pitch generated successfully!');
     } catch (error) {
-      toast({
-        title: "Generation failed",
-        description: "There was an error generating your pitch. Please try again.",
-        variant: "destructive"
-      });
+      toast.error('Failed to generate pitch. Please try again.');
     } finally {
       setIsGenerating(false);
     }
   };
 
-  const handleSave = () => {
-    if (!generatedPitch) return;
+  const handleSave = async () => {
+    if (!generatedPitch || !user) return;
 
-    // In a real app, this would save to Supabase
-    const savedPitches = JSON.parse(localStorage.getItem('pitches') || '[]');
-    const pitchWithId = {
-      ...generatedPitch,
-      id: Date.now().toString(),
-      user_email: 'demo@example.com',
-      created_at: new Date().toISOString()
-    };
-    
-    savedPitches.push(pitchWithId);
-    localStorage.setItem('pitches', JSON.stringify(savedPitches));
-    
-    toast({
-      title: "Pitch saved!",
-      description: "Your pitch has been saved to your dashboard."
-    });
-    
-    navigate('/dashboard');
+    setIsSaving(true);
+    try {
+      const result = await savePitchToSupabase(generatedPitch, user.email!);
+      if (result.success) {
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      toast.error('Failed to save pitch. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const examplePrompts = [
@@ -170,11 +156,18 @@ export function CreatePitch() {
                       </div>
                       <Button
                         onClick={handleSave}
+                        disabled={isSaving}
                         variant="secondary"
                         className="w-full lg:w-auto bg-white text-purple-600 hover:bg-gray-100 py-2 lg:py-3 px-4 lg:px-6"
                       >
-                        <Save className="h-4 w-4 mr-2" />
-                        Save Pitch
+                        {isSaving ? (
+                          <LoadingSpinner text="Saving..." />
+                        ) : (
+                          <>
+                            <Save className="h-4 w-4 mr-2" />
+                            Save Pitch
+                          </>
+                        )}
                       </Button>
                     </div>
                   </CardContent>

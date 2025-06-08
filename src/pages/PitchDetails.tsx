@@ -4,22 +4,37 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { VoicePlayer } from '@/components/VoicePlayer';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { ArrowLeft, Edit, Share2, Download, Star, Users, DollarSign, Target } from 'lucide-react';
 import { SavedPitch } from '@/types/pitch';
+import { fetchPitchById } from '@/lib/supabasePitches';
 import { motion } from 'framer-motion';
 
 export function PitchDetails() {
   const { id } = useParams<{ id: string }>();
   const [pitch, setPitch] = useState<SavedPitch | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
-      // In a real app, this would fetch from Supabase
-      const savedPitches = JSON.parse(localStorage.getItem('pitches') || '[]');
-      const foundPitch = savedPitches.find((p: SavedPitch) => p.id === id);
-      setPitch(foundPitch || null);
-    }
+    const loadPitch = async () => {
+      if (id) {
+        setLoading(true);
+        const pitchData = await fetchPitchById(id);
+        setPitch(pitchData);
+        setLoading(false);
+      }
+    };
+
+    loadPitch();
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+        <LoadingSpinner text="Loading pitch details..." />
+      </div>
+    );
+  }
 
   if (!pitch) {
     return (

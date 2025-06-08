@@ -2,19 +2,31 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PitchCard } from '@/components/PitchCard';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { Plus, FileText, Calendar, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SavedPitch } from '@/types/pitch';
+import { useAuth } from '@/contexts/AuthContext';
+import { fetchUserPitches } from '@/lib/supabasePitches';
 import { motion } from 'framer-motion';
 
 export function Dashboard() {
   const [pitches, setPitches] = useState<SavedPitch[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
-    // In a real app, this would fetch from Supabase
-    const savedPitches = JSON.parse(localStorage.getItem('pitches') || '[]');
-    setPitches(savedPitches);
-  }, []);
+    const loadPitches = async () => {
+      if (user?.email) {
+        setLoading(true);
+        const userPitches = await fetchUserPitches(user.email);
+        setPitches(userPitches);
+        setLoading(false);
+      }
+    };
+
+    loadPitches();
+  }, [user]);
 
   const stats = [
     {
@@ -41,6 +53,14 @@ export function Dashboard() {
       color: 'text-purple-600'
     }
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+        <LoadingSpinner text="Loading your pitches..." />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-6 lg:py-12">
