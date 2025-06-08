@@ -11,10 +11,9 @@ import './styles/globals.css';
 function App() {
   return (
     <Router>
-      <div className="page-container">
+      <div>
         <Navbar />
-        <main className="main-content">
-          <div className="container">
+          <div >
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/create" element={<CreatePitch />} />
@@ -22,7 +21,6 @@ function App() {
               <Route path="/pitch/:id" element={<PitchDetails />} />
             </Routes>
           </div>
-        </main>
         <Footer />
         <Toaster />
       </div>
