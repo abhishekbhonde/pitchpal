@@ -52,7 +52,7 @@
 @layer components {
   /* Layout Components */
   .container {
-    @apply ;
+    @apply px-1;
   }
 
   .page-container {
