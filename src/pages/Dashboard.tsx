@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PitchCard } from '@/components/PitchCard';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-import { Plus, FileText, Calendar, TrendingUp, Zap, BarChart3, Users, DollarSign } from 'lucide-react';
+import { Plus, FileText, Calendar, TrendingUp, Zap, BarChart3, Users, DollarSign, Target, Sparkles, Clock, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SavedPitch } from '@/types/pitch';
 import { useAuth } from '@/contexts/AuthContext';
@@ -36,7 +36,8 @@ export function Dashboard() {
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
       change: '+12%',
-      changeColor: 'text-emerald-600'
+      changeColor: 'text-emerald-600',
+      gradient: 'from-blue-500 to-blue-600'
     },
     {
       title: 'This Month',
@@ -50,7 +51,8 @@ export function Dashboard() {
       color: 'text-emerald-600',
       bgColor: 'bg-emerald-50',
       change: '+8%',
-      changeColor: 'text-emerald-600'
+      changeColor: 'text-emerald-600',
+      gradient: 'from-emerald-500 to-emerald-600'
     },
     {
       title: 'Avg. Features',
@@ -59,7 +61,8 @@ export function Dashboard() {
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
       change: '+15%',
-      changeColor: 'text-emerald-600'
+      changeColor: 'text-emerald-600',
+      gradient: 'from-purple-500 to-purple-600'
     },
     {
       title: 'Success Rate',
@@ -68,42 +71,83 @@ export function Dashboard() {
       color: 'text-orange-600',
       bgColor: 'bg-orange-50',
       change: '+3%',
-      changeColor: 'text-emerald-600'
+      changeColor: 'text-emerald-600',
+      gradient: 'from-orange-500 to-orange-600'
+    }
+  ];
+
+  const quickActions = [
+    {
+      title: 'AI Pitch Generator',
+      description: 'Create new pitch in minutes',
+      icon: <Zap className="h-6 w-6" />,
+      gradient: 'from-blue-500 to-blue-600',
+      href: '/create'
+    },
+    {
+      title: 'Analytics',
+      description: 'Track pitch performance',
+      icon: <BarChart3 className="h-6 w-6" />,
+      gradient: 'from-emerald-500 to-emerald-600',
+      href: '/analytics'
+    },
+    {
+      title: 'Templates',
+      description: 'Browse pitch templates',
+      icon: <Target className="h-6 w-6" />,
+      gradient: 'from-purple-500 to-purple-600',
+      href: '/templates'
     }
   ];
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center">
-        <LoadingSpinner text="Loading your pitches..." />
+        <LoadingSpinner text="Loading your pitches..." size="lg" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-20">
+      <div className="container-custom section-padding-sm">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           {/* Header */}
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 lg:mb-12 space-y-6 lg:space-y-0">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-12 space-y-6 lg:space-y-0">
             <div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3">
+              <motion.h1 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3"
+              >
                 Welcome back, {user?.user_metadata?.full_name || 'Entrepreneur'}
-              </h1>
-              <p className="text-xl text-slate-600 leading-relaxed">
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-xl text-muted-foreground leading-relaxed"
+              >
                 Manage your AI-generated pitch decks and track your startup journey
-              </p>
+              </motion.p>
             </div>
-            <Button asChild className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-              <Link to="/create">
-                <Plus className="h-5 w-5 mr-2" />
-                Create New Pitch
-              </Link>
-            </Button>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <Button asChild className="btn-premium px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl">
+                <Link to="/create">
+                  <Plus className="h-5 w-5 mr-2" />
+                  Create New Pitch
+                </Link>
+              </Button>
+            </motion.div>
           </div>
 
           {/* Stats Grid */}
@@ -113,104 +157,86 @@ export function Dashboard() {
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: 0.1 + index * 0.1 }}
+                className="group"
               >
-                <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
+                <div className="card-premium hover-lift">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <div className={`p-3 rounded-xl ${stat.bgColor}`}>
+                      <div className={`p-3 rounded-xl ${stat.bgColor} group-hover:scale-110 transition-transform duration-300`}>
                         <div className={stat.color}>{stat.icon}</div>
                       </div>
-                      <div className={`text-sm font-semibold ${stat.changeColor} flex items-center`}>
+                      <div className={`text-sm font-semibold ${stat.changeColor} flex items-center bg-emerald-50 px-2 py-1 rounded-full`}>
                         <TrendingUp className="h-3 w-3 mr-1" />
                         {stat.change}
                       </div>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-slate-600 mb-1">
+                      <p className="text-sm font-medium text-muted-foreground mb-1">
                         {stat.title}
                       </p>
-                      <p className="text-3xl font-bold text-slate-900">
+                      <p className="text-3xl font-bold text-foreground">
                         {stat.value}
                       </p>
                     </div>
                   </CardContent>
-                </Card>
+                </div>
               </motion.div>
             ))}
           </div>
 
           {/* Quick Actions */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-blue-500 to-blue-600 text-white cursor-pointer group">
-                <CardContent className="p-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-white/20 rounded-xl group-hover:bg-white/30 transition-colors">
-                      <Zap className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg">AI Pitch Generator</h3>
-                      <p className="text-blue-100">Create new pitch in minutes</p>
-                    </div>
+            {quickActions.map((action, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+              >
+                <Link to={action.href}>
+                  <div className={`card-premium bg-gradient-to-br ${action.gradient} text-white cursor-pointer group hover-lift hover-glow`}>
+                    <CardContent className="p-6">
+                      <div className="flex items-center space-x-4">
+                        <div className="p-3 bg-white/20 rounded-xl group-hover:bg-white/30 transition-colors group-hover:scale-110 duration-300">
+                          {action.icon}
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-lg">{action.title}</h3>
+                          <p className="text-white/80">{action.description}</p>
+                        </div>
+                      </div>
+                    </CardContent>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white cursor-pointer group">
-                <CardContent className="p-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-white/20 rounded-xl group-hover:bg-white/30 transition-colors">
-                      <BarChart3 className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg">Analytics</h3>
-                      <p className="text-emerald-100">Track pitch performance</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-purple-500 to-purple-600 text-white cursor-pointer group">
-                <CardContent className="p-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-white/20 rounded-xl group-hover:bg-white/30 transition-colors">
-                      <Users className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg">Investor Network</h3>
-                      <p className="text-purple-100">Connect with investors</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+                </Link>
+              </motion.div>
+            ))}
           </div>
 
           {/* Pitches Section */}
           <div className="mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl lg:text-3xl font-bold text-slate-900">Your Pitch Decks</h2>
+            <div className="flex items-center justify-between mb-8">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.7 }}
+              >
+                <h2 className="text-2xl lg:text-3xl font-bold text-foreground flex items-center">
+                  <Sparkles className="h-8 w-8 mr-3 text-primary" />
+                  Your Pitch Decks
+                </h2>
+                <p className="text-muted-foreground mt-2">Manage and track your AI-generated presentations</p>
+              </motion.div>
               {pitches.length > 0 && (
-                <Button variant="outline" className="border-2">
-                  View All
-                </Button>
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                >
+                  <Button variant="outline" className="border-2">
+                    View All
+                  </Button>
+                </motion.div>
               )}
             </div>
 
@@ -224,33 +250,38 @@ export function Dashboard() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.7 }}
+                transition={{ duration: 0.6, delay: 0.9 }}
               >
-                <Card className="border-0 shadow-xl bg-white">
+                <div className="card-premium">
                   <CardContent className="p-12 lg:p-16 text-center">
-                    <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.6, delay: 1 }}
+                      className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
+                    >
                       <FileText className="h-10 w-10 text-white" />
-                    </div>
-                    <CardTitle className="text-2xl lg:text-3xl font-bold text-slate-900 mb-4">
+                    </motion.div>
+                    <CardTitle className="text-2xl lg:text-3xl font-bold text-foreground mb-4">
                       Ready to Create Your First Pitch?
                     </CardTitle>
-                    <CardDescription className="text-slate-600 mb-8 max-w-md mx-auto text-lg leading-relaxed">
+                    <CardDescription className="text-muted-foreground mb-8 max-w-md mx-auto text-lg leading-relaxed">
                       Transform your startup idea into a professional, investor-ready pitch deck 
                       with the power of AI. Get started in just a few clicks.
                     </CardDescription>
                     <div className="space-y-4">
-                      <Button asChild className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                      <Button asChild className="btn-premium px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl">
                         <Link to="/create">
                           <Plus className="h-5 w-5 mr-2" />
                           Create Your First Pitch
                         </Link>
                       </Button>
-                      <p className="text-sm text-slate-500">
+                      <p className="text-sm text-muted-foreground">
                         No credit card required • Generate unlimited pitches
                       </p>
                     </div>
                   </CardContent>
-                </Card>
+                </div>
               </motion.div>
             )}
           </div>
