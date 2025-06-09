@@ -88,7 +88,7 @@ export function LandingPage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50">
         <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-2 pt-5 pb-16 lg:pt-32 lg:pb-24">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-2 pt-20 pb-10 lg:pt-32 lg:pb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
