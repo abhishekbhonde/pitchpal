@@ -95,7 +95,7 @@ export function LandingPage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <Badge className="mb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 px-2 py-2 text-sm font-medium">
+            <Badge className="mb-0 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 px-6 py-2 text-sm font-medium">
               <Sparkles className="h-4 w-4 mr-2" />
               Trusted by 10,000+ Entrepreneurs
             </Badge>
