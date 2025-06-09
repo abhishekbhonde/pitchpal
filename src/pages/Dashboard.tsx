@@ -103,7 +103,7 @@ export function Dashboard() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center">
-        <LoadingSpinner text="Loading your pitches..." size="lg" />
+        <LoadingSpinner text="Loading your pitches...\" size="lg" />
       </div>
     );
   }
