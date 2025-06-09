@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Menu, X, Zap, User, LogOut, Settings } from 'lucide-react';
+import { Menu, X, Zap, User, LogOut, Settings, BarChart3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -14,7 +14,9 @@ export function Navbar() {
   const { user, signOut } = useAuth();
 
   const navItems = [
-    { name: 'Home', path: '/' },
+    { name: 'Features', path: '/#features' },
+    { name: 'How it Works', path: '/#how-it-works' },
+    { name: 'Pricing', path: '/#pricing' },
     { name: 'Create Pitch', path: '/create' },
     { name: 'Dashboard', path: '/dashboard' },
   ];
@@ -31,88 +33,119 @@ export function Navbar() {
   };
 
   return (
-    <nav className="bg-white/90 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
+    <nav className="bg-white/95 backdrop-blur-lg border-b border-slate-200/50 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 lg:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <div className="p-2 lg:p-2.5 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl group-hover:scale-105 transition-transform duration-200">
-              <Zap className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="p-2.5 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl group-hover:scale-105 transition-transform duration-200 shadow-lg">
+              <Zap className="h-6 w-6 text-white" />
             </div>
-            <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              PitchPal
-            </span>
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                PitchPal
+              </span>
+              <span className="text-xs text-slate-500 font-medium -mt-1">AI Co-Founder</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {navItems.map((item) => (
+          <div className="hidden lg:flex items-center space-x-1">
+            {navItems.slice(0, 3).map((item) => (
               <Link
                 key={item.name}
                 to={item.path}
-                className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 ${
-                  isActive(item.path)
-                    ? 'text-blue-600'
-                    : 'text-gray-600 hover:text-blue-600'
-                }`}
+                className="relative px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors duration-200 rounded-lg hover:bg-slate-50"
               >
                 {item.name}
-                {isActive(item.path) && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600 rounded-full"
-                    initial={false}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                )}
               </Link>
             ))}
             
+            {user && (
+              <>
+                {navItems.slice(3).map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.path}
+                    className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 rounded-lg ${
+                      isActive(item.path)
+                        ? 'text-blue-600 bg-blue-50'
+                        : 'text-slate-600 hover:text-blue-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    {item.name}
+                    {isActive(item.path) && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-600 rounded-full"
+                        initial={false}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                ))}
+              </>
+            )}
+          </div>
+
+          {/* Auth Section */}
+          <div className="hidden lg:flex items-center space-x-4">
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full ring-2 ring-slate-200 hover:ring-blue-300 transition-all duration-200">
                     <Avatar className="h-10 w-10">
-                      <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                      <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold">
                         {getInitials(user.email || '')}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <div className="flex items-center justify-start gap-2 p-2">
+                <DropdownMenuContent className="w-64 p-2" align="end" forceMount>
+                  <div className="flex items-center justify-start gap-3 p-3 bg-slate-50 rounded-lg mb-2">
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                        {getInitials(user.email || '')}
+                      </AvatarFallback>
+                    </Avatar>
                     <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium text-sm">{user.user_metadata?.full_name || 'User'}</p>
-                      <p className="w-[200px] truncate text-xs text-muted-foreground">
+                      <p className="font-semibold text-sm text-slate-900">{user.user_metadata?.full_name || 'User'}</p>
+                      <p className="w-[180px] truncate text-xs text-slate-500">
                         {user.email}
                       </p>
                     </div>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/dashboard" className="cursor-pointer">
-                      <User className="mr-2 h-4 w-4" />
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link to="/dashboard" className="flex items-center">
+                      <BarChart3 className="mr-3 h-4 w-4" />
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link to="/profile" className="flex items-center">
+                      <User className="mr-3 h-4 w-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Settings className="mr-3 h-4 w-4" />
                     Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
-                    <LogOut className="mr-2 h-4 w-4" />
+                  <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-red-600 focus:text-red-600">
+                    <LogOut className="mr-3 h-4 w-4" />
                     Sign out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <div className="flex items-center space-x-4">
-                <Button asChild variant="ghost">
+              <div className="flex items-center space-x-3">
+                <Button asChild variant="ghost" className="text-slate-600 hover:text-blue-600">
                   <Link to="/login">Sign In</Link>
                 </Button>
-                <Button asChild className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-2.5 text-sm font-medium">
-                  <Link to="/register">Get Started</Link>
+                <Button asChild className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2.5 font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                  <Link to="/register">Get Started Free</Link>
                 </Button>
               </div>
             )}
@@ -124,7 +157,7 @@ export function Navbar() {
               variant="ghost"
               size="sm"
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 hover:bg-gray-100 rounded-lg"
+              className="p-2 hover:bg-slate-100 rounded-lg"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
@@ -139,7 +172,7 @@ export function Navbar() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="lg:hidden border-t border-gray-200/50 py-4 bg-white/95 backdrop-blur-sm"
+              className="lg:hidden border-t border-slate-200/50 py-4 bg-white/95 backdrop-blur-sm"
             >
               <div className="flex flex-col space-y-2">
                 {navItems.map((item) => (
@@ -150,7 +183,7 @@ export function Navbar() {
                     className={`px-4 py-3 text-base font-medium rounded-lg transition-colors duration-200 ${
                       isActive(item.path)
                         ? 'text-blue-600 bg-blue-50'
-                        : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+                        : 'text-slate-600 hover:text-blue-600 hover:bg-slate-50'
                     }`}
                   >
                     {item.name}
@@ -158,16 +191,16 @@ export function Navbar() {
                 ))}
                 
                 {user ? (
-                  <div className="px-4 py-2 border-t border-gray-200 mt-2">
-                    <div className="flex items-center space-x-3 mb-3">
-                      <Avatar className="h-8 w-8">
+                  <div className="px-4 py-2 border-t border-slate-200 mt-2">
+                    <div className="flex items-center space-x-3 mb-4 p-3 bg-slate-50 rounded-lg">
+                      <Avatar className="h-10 w-10">
                         <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm">
                           {getInitials(user.email || '')}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium text-sm">{user.user_metadata?.full_name || 'User'}</p>
-                        <p className="text-xs text-gray-500">{user.email}</p>
+                        <p className="font-semibold text-sm text-slate-900">{user.user_metadata?.full_name || 'User'}</p>
+                        <p className="text-xs text-slate-500">{user.email}</p>
                       </div>
                     </div>
                     <Button
@@ -183,7 +216,7 @@ export function Navbar() {
                     </Button>
                   </div>
                 ) : (
-                  <div className="px-4 py-2 border-t border-gray-200 mt-2 space-y-2">
+                  <div className="px-4 py-2 border-t border-slate-200 mt-2 space-y-3">
                     <Button
                       asChild
                       variant="outline"
@@ -194,10 +227,10 @@ export function Navbar() {
                     </Button>
                     <Button
                       asChild
-                      className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                       onClick={() => setIsOpen(false)}
                     >
-                      <Link to="/register">Get Started</Link>
+                      <Link to="/register">Get Started Free</Link>
                     </Button>
                   </div>
                 )}

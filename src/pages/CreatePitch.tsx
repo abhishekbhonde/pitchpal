@@ -10,7 +10,7 @@ import { generatePitchFromIdea } from '@/lib/mockPitchGenerator';
 import { savePitchToSupabase } from '@/lib/supabasePitches';
 import { GeneratedPitch } from '@/types/pitch';
 import { useAuth } from '@/contexts/AuthContext';
-import { Sparkles, Lightbulb, Target, Users, DollarSign, Save } from 'lucide-react';
+import { Sparkles, Lightbulb, Target, Users, DollarSign, Save, Brain, Zap, TrendingUp, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -57,63 +57,91 @@ export function CreatePitch() {
   };
 
   const examplePrompts = [
-    "An AI co-founder that builds pitch decks automatically from startup ideas",
-    "A sustainable food delivery app that connects local farmers with urban consumers",
-    "A virtual reality fitness platform for home workouts with personal trainers",
-    "A blockchain-based marketplace for digital art and collectibles"
+    "An AI-powered platform that helps small businesses automate their customer service with intelligent chatbots and sentiment analysis",
+    "A sustainable food delivery service connecting local organic farmers directly with urban consumers through a carbon-neutral logistics network",
+    "A virtual reality fitness platform offering immersive workout experiences with real-time biometric feedback and social challenges",
+    "A blockchain-based marketplace for digital art and collectibles with integrated creator royalty management and fraud protection"
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-6 lg:py-12">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="text-center mb-6 lg:mb-12">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 lg:mb-4">
-              Create Your Pitch
+          {/* Header */}
+          <div className="text-center mb-12 lg:mb-16">
+            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-semibold mb-6">
+              <Brain className="h-4 w-4" />
+              <span>AI-Powered Pitch Generation</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
+              Transform Your Idea Into an
+              <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Investor-Ready Pitch
+              </span>
             </h1>
-            <p className="text-base lg:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-              Describe your startup idea and let AI transform it into a professional pitch deck
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+              Describe your startup vision and watch our AI create a comprehensive pitch deck 
+              with market analysis, competitive insights, and professional presentation materials.
             </p>
           </div>
 
-          <Card className="mb-6 lg:mb-12 border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg">
-            <CardHeader className="pb-4 lg:pb-6">
-              <CardTitle className="flex items-center space-x-2 text-lg lg:text-xl">
-                <Lightbulb className="h-5 w-5 lg:h-6 lg:w-6 text-blue-600" />
-                <span>Your Startup Idea</span>
+          {/* Input Section */}
+          <Card className="mb-12 border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+            <CardHeader className="pb-6">
+              <CardTitle className="flex items-center space-x-3 text-2xl">
+                <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+                  <Lightbulb className="h-6 w-6 text-white" />
+                </div>
+                <span>Your Startup Vision</span>
               </CardTitle>
-              <CardDescription className="text-sm lg:text-base">
-                Tell us about your startup idea in detail. The more information you provide, the better your pitch will be.
+              <CardDescription className="text-lg text-slate-600">
+                Share your startup idea in detail. Include your target market, unique value proposition, 
+                and business model. The more context you provide, the better your pitch will be.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 lg:space-y-6">
+            <CardContent className="space-y-6">
               <div>
-                <Label htmlFor="idea" className="text-sm lg:text-base font-medium">Startup Idea</Label>
+                <Label htmlFor="idea" className="text-base font-semibold text-slate-700 mb-3 block">
+                  Describe Your Startup Idea
+                </Label>
                 <Textarea
                   id="idea"
                   value={idea}
                   onChange={(e) => setIdea(e.target.value)}
-                  placeholder="Describe your startup idea here... For example: 'An AI-powered platform that helps small businesses create professional marketing campaigns automatically. It analyzes their industry, target audience, and competition to generate personalized content, social media posts, and ad campaigns.'"
-                  className="min-h-[120px] lg:min-h-[150px] mt-2 text-sm lg:text-base resize-none"
+                  placeholder="Example: 'An AI-powered platform that helps small businesses create professional marketing campaigns automatically. It analyzes their industry, target audience, and competition to generate personalized content, social media posts, and ad campaigns. The platform uses machine learning to optimize campaign performance and provides detailed analytics to track ROI...'"
+                  className="min-h-[150px] text-base resize-none border-2 border-slate-200 focus:border-blue-500 transition-colors"
                   disabled={isGenerating}
                 />
+                <div className="flex justify-between items-center mt-2">
+                  <span className="text-sm text-slate-500">
+                    {idea.length} characters
+                  </span>
+                  <span className="text-sm text-slate-500">
+                    Minimum 100 characters recommended
+                  </span>
+                </div>
               </div>
               
               <div>
-                <Label className="text-sm lg:text-base font-medium text-gray-700">Example prompts:</Label>
-                <div className="flex flex-wrap gap-2 lg:gap-3 mt-2 lg:mt-3">
+                <Label className="text-base font-semibold text-slate-700 mb-3 block">
+                  Need inspiration? Try these examples:
+                </Label>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                   {examplePrompts.map((prompt, index) => (
                     <Badge
                       key={index}
                       variant="outline"
-                      className="cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-colors text-xs lg:text-sm p-2 lg:p-3 leading-relaxed"
+                      className="cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 text-sm p-4 leading-relaxed text-left justify-start h-auto"
                       onClick={() => setIdea(prompt)}
                     >
-                      {prompt.length > 60 ? `${prompt.slice(0, 60)}...` : prompt}
+                      <div className="flex items-start space-x-2">
+                        <Sparkles className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <span>{prompt}</span>
+                      </div>
                     </Badge>
                   ))}
                 </div>
@@ -121,22 +149,26 @@ export function CreatePitch() {
 
               <Button
                 onClick={handleGenerate}
-                disabled={isGenerating || !idea.trim()}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 py-3 lg:py-4 text-base lg:text-lg"
+                disabled={isGenerating || !idea.trim() || idea.length < 50}
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 size="lg"
               >
                 {isGenerating ? (
-                  <LoadingSpinner text="Generating your pitch..." />
+                  <div className="flex items-center space-x-3">
+                    <LoadingSpinner text="" />
+                    <span>Generating your pitch...</span>
+                  </div>
                 ) : (
-                  <>
-                    <Sparkles className="h-4 w-4 lg:h-5 lg:w-5 mr-2" />
-                    Generate Pitch
-                  </>
+                  <div className="flex items-center space-x-2">
+                    <Zap className="h-5 w-5" />
+                    <span>Generate Professional Pitch</span>
+                  </div>
                 )}
               </Button>
             </CardContent>
           </Card>
 
+          {/* Generated Pitch Display */}
           <AnimatePresence>
             {generatedPitch && (
               <motion.div
@@ -144,141 +176,185 @@ export function CreatePitch() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.6 }}
-                className="space-y-6 lg:space-y-8"
+                className="space-y-8"
               >
-                {/* Header */}
-                <Card className="border-0 bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-xl">
-                  <CardContent className="p-6 lg:p-8">
-                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
+                {/* Pitch Header */}
+                <Card className="border-0 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white shadow-2xl">
+                  <CardContent className="p-8 lg:p-12">
+                    <div className="flex flex-col lg:flex-row justify-between items-start space-y-6 lg:space-y-0">
                       <div className="flex-1">
-                        <h2 className="text-xl lg:text-3xl font-bold mb-2 lg:mb-3">{generatedPitch.name}</h2>
-                        <p className="text-base lg:text-xl text-blue-100">{generatedPitch.tagline}</p>
+                        <h2 className="text-3xl lg:text-4xl font-bold mb-4">{generatedPitch.name}</h2>
+                        <p className="text-xl lg:text-2xl text-blue-100 mb-6">{generatedPitch.tagline}</p>
+                        <p className="text-blue-100 leading-relaxed text-lg">{generatedPitch.hero_section.subtext}</p>
                       </div>
-                      <Button
-                        onClick={handleSave}
-                        disabled={isSaving}
-                        variant="secondary"
-                        className="w-full lg:w-auto bg-white text-purple-600 hover:bg-gray-100 py-2 lg:py-3 px-4 lg:px-6"
-                      >
-                        {isSaving ? (
-                          <LoadingSpinner text="Saving..." />
-                        ) : (
-                          <>
-                            <Save className="h-4 w-4 mr-2" />
-                            Save Pitch
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Hero Section */}
-                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg">
-                  <CardHeader className="pb-4 lg:pb-6">
-                    <CardTitle className="flex items-center space-x-2 text-lg lg:text-xl">
-                      <Target className="h-5 w-5 lg:h-6 lg:w-6 text-blue-600" />
-                      <span>Hero Section</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4 lg:space-y-6">
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2 text-base lg:text-lg">Headline</h3>
-                      <p className="text-base lg:text-xl">{generatedPitch.hero_section.headline}</p>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2 text-base lg:text-lg">Subtext</h3>
-                      <p className="text-gray-600 text-sm lg:text-base leading-relaxed">{generatedPitch.hero_section.subtext}</p>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2 text-base lg:text-lg">Call to Action</h3>
-                      <Badge className="bg-blue-600 text-sm lg:text-base px-3 lg:px-4 py-1 lg:py-2">{generatedPitch.hero_section.call_to_action}</Badge>
+                      <div className="flex flex-col space-y-3 w-full lg:w-auto">
+                        <Button
+                          onClick={handleSave}
+                          disabled={isSaving}
+                          className="bg-white text-purple-600 hover:bg-gray-100 py-3 px-6 font-semibold"
+                        >
+                          {isSaving ? (
+                            <div className="flex items-center space-x-2">
+                              <LoadingSpinner text="" />
+                              <span>Saving...</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center space-x-2">
+                              <Save className="h-5 w-5" />
+                              <span>Save Pitch</span>
+                            </div>
+                          )}
+                        </Button>
+                        <Badge className="bg-emerald-500 text-white border-0 py-2 px-4 text-center">
+                          {generatedPitch.hero_section.call_to_action}
+                        </Badge>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Problem & Solution */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                  <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg">
-                    <CardHeader className="pb-4 lg:pb-6">
-                      <CardTitle className="text-red-600 text-lg lg:text-xl">Problem</CardTitle>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <Card className="border-0 shadow-xl bg-gradient-to-br from-red-50 to-red-100">
+                    <CardHeader className="pb-6">
+                      <CardTitle className="text-red-700 text-2xl flex items-center space-x-2">
+                        <Target className="h-6 w-6" />
+                        <span>Problem Statement</span>
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-700 text-sm lg:text-base leading-relaxed">{generatedPitch.problem}</p>
+                      <p className="text-red-800 leading-relaxed text-lg">{generatedPitch.problem}</p>
                     </CardContent>
                   </Card>
 
-                  <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg">
-                    <CardHeader className="pb-4 lg:pb-6">
-                      <CardTitle className="text-green-600 text-lg lg:text-xl">Solution</CardTitle>
+                  <Card className="border-0 shadow-xl bg-gradient-to-br from-emerald-50 to-emerald-100">
+                    <CardHeader className="pb-6">
+                      <CardTitle className="text-emerald-700 text-2xl flex items-center space-x-2">
+                        <Lightbulb className="h-6 w-6" />
+                        <span>Our Solution</span>
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-700 text-sm lg:text-base leading-relaxed">{generatedPitch.solution}</p>
+                      <p className="text-emerald-800 leading-relaxed text-lg">{generatedPitch.solution}</p>
                     </CardContent>
                   </Card>
                 </div>
 
-                {/* Features */}
-                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg">
-                  <CardHeader className="pb-4 lg:pb-6">
-                    <CardTitle className="text-lg lg:text-xl">Key Features</CardTitle>
+                {/* Key Features */}
+                <Card className="border-0 shadow-xl bg-white">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="text-2xl flex items-center space-x-2">
+                      <Sparkles className="h-6 w-6 text-blue-600" />
+                      <span>Key Features & Benefits</span>
+                    </CardTitle>
+                    <CardDescription className="text-lg">
+                      Core functionality that sets us apart from the competition
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       {generatedPitch.features.map((feature, index) => (
-                        <div key={index} className="flex items-start space-x-3 p-3 lg:p-4 bg-gray-50 rounded-lg">
-                          <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
-                          <p className="text-gray-700 text-sm lg:text-base leading-relaxed">{feature}</p>
-                        </div>
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="flex items-start space-x-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl"
+                        >
+                          <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mt-2 flex-shrink-0" />
+                          <p className="text-slate-700 leading-relaxed">{feature}</p>
+                        </motion.div>
                       ))}
                     </div>
                   </CardContent>
                 </Card>
 
-                {/* Target Users & Monetization */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                  <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg">
-                    <CardHeader className="pb-4 lg:pb-6">
-                      <CardTitle className="flex items-center space-x-2 text-lg lg:text-xl">
-                        <Users className="h-5 w-5 lg:h-6 lg:w-6 text-blue-600" />
-                        <span>Target Users</span>
+                {/* Business Model */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <Card className="border-0 shadow-xl bg-gradient-to-br from-blue-50 to-blue-100">
+                    <CardHeader className="pb-6">
+                      <CardTitle className="flex items-center space-x-2 text-blue-700">
+                        <Users className="h-6 w-6" />
+                        <span>Target Market</span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-700 text-sm lg:text-base leading-relaxed">{generatedPitch.target_users}</p>
+                      <p className="text-blue-800 leading-relaxed">{generatedPitch.target_users}</p>
                     </CardContent>
                   </Card>
 
-                  <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg">
-                    <CardHeader className="pb-4 lg:pb-6">
-                      <CardTitle className="flex items-center space-x-2 text-lg lg:text-xl">
-                        <DollarSign className="h-5 w-5 lg:h-6 lg:w-6 text-green-600" />
-                        <span>Monetization</span>
+                  <Card className="border-0 shadow-xl bg-gradient-to-br from-emerald-50 to-emerald-100">
+                    <CardHeader className="pb-6">
+                      <CardTitle className="flex items-center space-x-2 text-emerald-700">
+                        <DollarSign className="h-6 w-6" />
+                        <span>Revenue Model</span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-700 text-sm lg:text-base leading-relaxed">{generatedPitch.monetization}</p>
+                      <p className="text-emerald-800 leading-relaxed">{generatedPitch.monetization}</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="border-0 shadow-xl bg-gradient-to-br from-purple-50 to-purple-100">
+                    <CardHeader className="pb-6">
+                      <CardTitle className="flex items-center space-x-2 text-purple-700">
+                        <TrendingUp className="h-6 w-6" />
+                        <span>Market Size</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-purple-800 leading-relaxed">{generatedPitch.market_size}</p>
                     </CardContent>
                   </Card>
                 </div>
 
-                {/* Testimonials */}
-                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg">
-                  <CardHeader className="pb-4 lg:pb-6">
-                    <CardTitle className="text-lg lg:text-xl">Testimonials</CardTitle>
+                {/* Social Proof */}
+                <Card className="border-0 shadow-xl bg-white">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center space-x-2 text-2xl">
+                      <Star className="h-6 w-6 text-yellow-500" />
+                      <span>Customer Testimonials</span>
+                    </CardTitle>
+                    <CardDescription className="text-lg">
+                      What early adopters and beta users are saying about our solution
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {generatedPitch.testimonials.map((testimonial, index) => (
-                        <div key={index} className="bg-gray-50 p-4 lg:p-6 rounded-lg">
-                          <p className="text-sm lg:text-base text-gray-600 italic mb-3 lg:mb-4">"{testimonial.quote}"</p>
-                          <div>
-                            <p className="font-semibold text-gray-900 text-sm lg:text-base">{testimonial.name}</p>
-                            <p className="text-xs lg:text-sm text-gray-500">{testimonial.role}</p>
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="bg-gradient-to-br from-slate-50 to-slate-100 p-6 rounded-xl"
+                        >
+                          <div className="flex items-center space-x-1 mb-4">
+                            {[...Array(5)].map((_, i) => (
+                              <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                            ))}
                           </div>
-                        </div>
+                          <p className="text-slate-600 italic mb-4 leading-relaxed">"{testimonial.quote}"</p>
+                          <div>
+                            <p className="font-bold text-slate-900">{testimonial.name}</p>
+                            <p className="text-sm text-slate-500">{testimonial.role}</p>
+                          </div>
+                        </motion.div>
                       ))}
                     </div>
+                  </CardContent>
+                </Card>
+
+                {/* Competition Analysis */}
+                <Card className="border-0 shadow-xl bg-white">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="text-2xl">Competitive Landscape</CardTitle>
+                    <CardDescription className="text-lg">
+                      How we differentiate ourselves in the market
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-slate-700 leading-relaxed text-lg">{generatedPitch.competition}</p>
                   </CardContent>
                 </Card>
               </motion.div>
