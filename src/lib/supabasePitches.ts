@@ -7,6 +7,9 @@ export async function savePitchToSupabase(
   userEmail: string
 ): Promise<{ success: boolean; error?: string; data?: SavedPitch }> {
   try {
+    console.log('Saving pitch for user:', userEmail);
+    console.log('Pitch data:', pitch);
+
     const { data, error } = await supabase
       .from('pitches')
       .insert([
@@ -21,9 +24,11 @@ export async function savePitchToSupabase(
 
     if (error) {
       console.error('Error saving pitch:', error);
-      toast.error('Failed to save pitch. Please try again.');
+      toast.error(`Failed to save pitch: ${error.message}`);
       return { success: false, error: error.message };
     }
+
+    console.log('Pitch saved successfully:', data);
 
     const savedPitch: SavedPitch = {
       id: data.id,
@@ -36,16 +41,19 @@ export async function savePitchToSupabase(
     return { success: true, data: savedPitch };
   } catch (error) {
     console.error('Unexpected error saving pitch:', error);
-    toast.error('An unexpected error occurred. Please try again.');
+    const message = error instanceof Error ? error.message : 'Unknown error occurred';
+    toast.error(`An unexpected error occurred: ${message}`);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error occurred',
+      error: message,
     };
   }
 }
 
 export async function fetchUserPitches(userEmail: string): Promise<SavedPitch[]> {
   try {
+    console.log('Fetching pitches for user:', userEmail);
+
     const { data, error } = await supabase
       .from('pitches')
       .select('*')
@@ -54,9 +62,11 @@ export async function fetchUserPitches(userEmail: string): Promise<SavedPitch[]>
 
     if (error) {
       console.error('Error fetching pitches:', error);
-      toast.error('Failed to load pitches. Please try again.');
+      toast.error(`Failed to load pitches: ${error.message}`);
       return [];
     }
+
+    console.log('Fetched pitches:', data);
 
     return data.map((item) => ({
       id: item.id,
@@ -73,6 +83,8 @@ export async function fetchUserPitches(userEmail: string): Promise<SavedPitch[]>
 
 export async function fetchPitchById(id: string): Promise<SavedPitch | null> {
   try {
+    console.log('Fetching pitch by ID:', id);
+
     const { data, error } = await supabase
       .from('pitches')
       .select('*')
@@ -81,8 +93,11 @@ export async function fetchPitchById(id: string): Promise<SavedPitch | null> {
 
     if (error) {
       console.error('Error fetching pitch:', error);
+      toast.error(`Failed to load pitch: ${error.message}`);
       return null;
     }
+
+    console.log('Fetched pitch:', data);
 
     return {
       id: data.id,
@@ -92,6 +107,7 @@ export async function fetchPitchById(id: string): Promise<SavedPitch | null> {
     };
   } catch (error) {
     console.error('Unexpected error fetching pitch:', error);
+    toast.error('An unexpected error occurred while loading the pitch.');
     return null;
   }
 }
@@ -101,6 +117,8 @@ export async function updatePitch(
   pitch: GeneratedPitch
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    console.log('Updating pitch:', id, pitch);
+
     const { error } = await supabase
       .from('pitches')
       .update({ pitch_data: pitch })
@@ -108,7 +126,7 @@ export async function updatePitch(
 
     if (error) {
       console.error('Error updating pitch:', error);
-      toast.error('Failed to update pitch. Please try again.');
+      toast.error(`Failed to update pitch: ${error.message}`);
       return { success: false, error: error.message };
     }
 
@@ -116,16 +134,19 @@ export async function updatePitch(
     return { success: true };
   } catch (error) {
     console.error('Unexpected error updating pitch:', error);
-    toast.error('An unexpected error occurred. Please try again.');
+    const message = error instanceof Error ? error.message : 'Unknown error occurred';
+    toast.error(`An unexpected error occurred: ${message}`);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error occurred',
+      error: message,
     };
   }
 }
 
 export async function deletePitch(id: string): Promise<{ success: boolean; error?: string }> {
   try {
+    console.log('Deleting pitch:', id);
+
     const { error } = await supabase
       .from('pitches')
       .delete()
@@ -133,7 +154,7 @@ export async function deletePitch(id: string): Promise<{ success: boolean; error
 
     if (error) {
       console.error('Error deleting pitch:', error);
-      toast.error('Failed to delete pitch. Please try again.');
+      toast.error(`Failed to delete pitch: ${error.message}`);
       return { success: false, error: error.message };
     }
 
@@ -141,10 +162,11 @@ export async function deletePitch(id: string): Promise<{ success: boolean; error
     return { success: true };
   } catch (error) {
     console.error('Unexpected error deleting pitch:', error);
-    toast.error('An unexpected error occurred. Please try again.');
+    const message = error instanceof Error ? error.message : 'Unknown error occurred';
+    toast.error(`An unexpected error occurred: ${message}`);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error occurred',
+      error: message,
     };
   }
 }
