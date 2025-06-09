@@ -14,13 +14,3 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: true
   }
 });
-
-// Test connection
-supabase.from('pitches').select('count', { count: 'exact', head: true })
-  .then(({ error }) => {
-    if (error) {
-      console.error('Supabase connection error:', error);
-    } else {
-      console.log('✅ Supabase connected successfully');
-    }
-  });
