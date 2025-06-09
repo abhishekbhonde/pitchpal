@@ -88,14 +88,14 @@ export function LandingPage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50">
         <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 lg:pt-32 lg:pb-24">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-2 pt-5 pb-16 lg:pt-32 lg:pb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <Badge className="mb-0 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 px-6 py-2 text-sm font-medium">
+            <Badge className="mb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 px-6 py-2 text-sm font-medium">
               <Sparkles className="h-4 w-4 mr-2" />
               Trusted by 10,000+ Entrepreneurs
             </Badge>
