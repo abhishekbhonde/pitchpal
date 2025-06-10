@@ -182,7 +182,7 @@ export function CreatePitch() {
                 >
                   {isGenerating ? (
                     <div className="flex items-center space-x-3">
-                      <LoadingSpinner text="" size="sm" />
+                      <LoadingSpinner text="\" size="sm" />
                       <span>Generating your pitch...</span>
                     </div>
                   ) : (
@@ -223,7 +223,7 @@ export function CreatePitch() {
                         >
                           {isSaving ? (
                             <div className="flex items-center space-x-2">
-                              <LoadingSpinner text="" size="sm" />
+                              <LoadingSpinner text="\" size="sm" />
                               <span>Saving...</span>
                             </div>
                           ) : (
