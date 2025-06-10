@@ -6,11 +6,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { VoicePlayer } from '@/components/VoicePlayer';
 import { generatePitchFromIdea } from '@/lib/mockPitchGenerator';
 import { savePitchToSupabase } from '@/lib/supabasePitches';
 import { GeneratedPitch } from '@/types/pitch';
 import { useAuth } from '@/contexts/AuthContext';
-import { Sparkles, Lightbulb, Target, Users, DollarSign, Save, Brain, Zap, TrendingUp, Star } from 'lucide-react';
+import { Sparkles, Lightbulb, Target, Users, DollarSign, Save, Brain, Zap, TrendingUp, Star, Mic, Volume2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -64,8 +65,8 @@ export function CreatePitch() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-20">
+      <div className="container-custom section-padding-sm">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -73,100 +74,127 @@ export function CreatePitch() {
         >
           {/* Header */}
           <div className="text-center mb-12 lg:mb-16">
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-semibold mb-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-semibold mb-6 shadow-lg"
+            >
               <Brain className="h-4 w-4" />
               <span>AI-Powered Pitch Generation</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
+            </motion.div>
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6"
+            >
               Transform Your Idea Into an
-              <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="block gradient-text">
                 Investor-Ready Pitch
               </span>
-            </h1>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+            >
               Describe your startup vision and watch our AI create a comprehensive pitch deck 
               with market analysis, competitive insights, and professional presentation materials.
-            </p>
+            </motion.p>
           </div>
 
           {/* Input Section */}
-          <Card className="mb-12 border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-            <CardHeader className="pb-6">
-              <CardTitle className="flex items-center space-x-3 text-2xl">
-                <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
-                  <Lightbulb className="h-6 w-6 text-white" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <div className="card-premium mb-12">
+              <CardHeader className="pb-6">
+                <CardTitle className="flex items-center space-x-3 text-2xl">
+                  <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+                    <Lightbulb className="h-6 w-6 text-white" />
+                  </div>
+                  <span>Your Startup Vision</span>
+                </CardTitle>
+                <CardDescription className="text-lg text-muted-foreground">
+                  Share your startup idea in detail. Include your target market, unique value proposition, 
+                  and business model. The more context you provide, the better your pitch will be.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <Label htmlFor="idea" className="text-base font-semibold text-foreground mb-3 block">
+                    Describe Your Startup Idea
+                  </Label>
+                  <Textarea
+                    id="idea"
+                    value={idea}
+                    onChange={(e) => setIdea(e.target.value)}
+                    placeholder="Example: 'An AI-powered platform that helps small businesses create professional marketing campaigns automatically. It analyzes their industry, target audience, and competition to generate personalized content, social media posts, and ad campaigns. The platform uses machine learning to optimize campaign performance and provides detailed analytics to track ROI...'"
+                    className="min-h-[150px] text-base resize-none border-2 border-border focus:border-primary transition-colors"
+                    disabled={isGenerating}
+                  />
+                  <div className="flex justify-between items-center mt-2">
+                    <span className="text-sm text-muted-foreground">
+                      {idea.length} characters
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      Minimum 100 characters recommended
+                    </span>
+                  </div>
                 </div>
-                <span>Your Startup Vision</span>
-              </CardTitle>
-              <CardDescription className="text-lg text-slate-600">
-                Share your startup idea in detail. Include your target market, unique value proposition, 
-                and business model. The more context you provide, the better your pitch will be.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <Label htmlFor="idea" className="text-base font-semibold text-slate-700 mb-3 block">
-                  Describe Your Startup Idea
-                </Label>
-                <Textarea
-                  id="idea"
-                  value={idea}
-                  onChange={(e) => setIdea(e.target.value)}
-                  placeholder="Example: 'An AI-powered platform that helps small businesses create professional marketing campaigns automatically. It analyzes their industry, target audience, and competition to generate personalized content, social media posts, and ad campaigns. The platform uses machine learning to optimize campaign performance and provides detailed analytics to track ROI...'"
-                  className="min-h-[150px] text-base resize-none border-2 border-slate-200 focus:border-blue-500 transition-colors"
-                  disabled={isGenerating}
-                />
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-sm text-slate-500">
-                    {idea.length} characters
-                  </span>
-                  <span className="text-sm text-slate-500">
-                    Minimum 100 characters recommended
-                  </span>
+                
+                <div>
+                  <Label className="text-base font-semibold text-foreground mb-3 block">
+                    Need inspiration? Try these examples:
+                  </Label>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                    {examplePrompts.map((prompt, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 + index * 0.1 }}
+                      >
+                        <Badge
+                          variant="outline"
+                          className="cursor-pointer hover:bg-primary/10 hover:border-primary/30 transition-all duration-200 text-sm p-4 leading-relaxed text-left justify-start h-auto w-full"
+                          onClick={() => setIdea(prompt)}
+                        >
+                          <div className="flex items-start space-x-2">
+                            <Sparkles className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                            <span>{prompt}</span>
+                          </div>
+                        </Badge>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              
-              <div>
-                <Label className="text-base font-semibold text-slate-700 mb-3 block">
-                  Need inspiration? Try these examples:
-                </Label>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-                  {examplePrompts.map((prompt, index) => (
-                    <Badge
-                      key={index}
-                      variant="outline"
-                      className="cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 text-sm p-4 leading-relaxed text-left justify-start h-auto"
-                      onClick={() => setIdea(prompt)}
-                    >
-                      <div className="flex items-start space-x-2">
-                        <Sparkles className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                        <span>{prompt}</span>
-                      </div>
-                    </Badge>
-                  ))}
-                </div>
-              </div>
 
-              <Button
-                onClick={handleGenerate}
-                disabled={isGenerating || !idea.trim() || idea.length < 50}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                size="lg"
-              >
-                {isGenerating ? (
-                  <div className="flex items-center space-x-3">
-                    <LoadingSpinner text="" />
-                    <span>Generating your pitch...</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center space-x-2">
-                    <Zap className="h-5 w-5" />
-                    <span>Generate Professional Pitch</span>
-                  </div>
-                )}
-              </Button>
-            </CardContent>
-          </Card>
+                <Button
+                  onClick={handleGenerate}
+                  disabled={isGenerating || !idea.trim() || idea.length < 50}
+                  className="w-full btn-premium py-4 text-lg font-semibold shadow-xl hover:shadow-2xl"
+                  size="lg"
+                >
+                  {isGenerating ? (
+                    <div className="flex items-center space-x-3">
+                      <LoadingSpinner text="" size="sm" />
+                      <span>Generating your pitch...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-2">
+                      <Zap className="h-5 w-5" />
+                      <span>Generate Professional Pitch</span>
+                    </div>
+                  )}
+                </Button>
+              </CardContent>
+            </div>
+          </motion.div>
 
           {/* Generated Pitch Display */}
           <AnimatePresence>
@@ -179,7 +207,7 @@ export function CreatePitch() {
                 className="space-y-8"
               >
                 {/* Pitch Header */}
-                <Card className="border-0 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white shadow-2xl">
+                <div className="card-premium bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white shadow-2xl">
                   <CardContent className="p-8 lg:p-12">
                     <div className="flex flex-col lg:flex-row justify-between items-start space-y-6 lg:space-y-0">
                       <div className="flex-1">
@@ -195,7 +223,7 @@ export function CreatePitch() {
                         >
                           {isSaving ? (
                             <div className="flex items-center space-x-2">
-                              <LoadingSpinner text="" />
+                              <LoadingSpinner text="" size="sm" />
                               <span>Saving...</span>
                             </div>
                           ) : (
@@ -211,11 +239,11 @@ export function CreatePitch() {
                       </div>
                     </div>
                   </CardContent>
-                </Card>
+                </div>
 
                 {/* Problem & Solution */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <Card className="border-0 shadow-xl bg-gradient-to-br from-red-50 to-red-100">
+                  <div className="card-premium bg-gradient-to-br from-red-50 to-red-100">
                     <CardHeader className="pb-6">
                       <CardTitle className="text-red-700 text-2xl flex items-center space-x-2">
                         <Target className="h-6 w-6" />
@@ -225,9 +253,9 @@ export function CreatePitch() {
                     <CardContent>
                       <p className="text-red-800 leading-relaxed text-lg">{generatedPitch.problem}</p>
                     </CardContent>
-                  </Card>
+                  </div>
 
-                  <Card className="border-0 shadow-xl bg-gradient-to-br from-emerald-50 to-emerald-100">
+                  <div className="card-premium bg-gradient-to-br from-emerald-50 to-emerald-100">
                     <CardHeader className="pb-6">
                       <CardTitle className="text-emerald-700 text-2xl flex items-center space-x-2">
                         <Lightbulb className="h-6 w-6" />
@@ -237,14 +265,14 @@ export function CreatePitch() {
                     <CardContent>
                       <p className="text-emerald-800 leading-relaxed text-lg">{generatedPitch.solution}</p>
                     </CardContent>
-                  </Card>
+                  </div>
                 </div>
 
                 {/* Key Features */}
-                <Card className="border-0 shadow-xl bg-white">
+                <div className="card-premium">
                   <CardHeader className="pb-6">
                     <CardTitle className="text-2xl flex items-center space-x-2">
-                      <Sparkles className="h-6 w-6 text-blue-600" />
+                      <Sparkles className="h-6 w-6 text-primary" />
                       <span>Key Features & Benefits</span>
                     </CardTitle>
                     <CardDescription className="text-lg">
@@ -262,16 +290,16 @@ export function CreatePitch() {
                           className="flex items-start space-x-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl"
                         >
                           <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mt-2 flex-shrink-0" />
-                          <p className="text-slate-700 leading-relaxed">{feature}</p>
+                          <p className="text-foreground leading-relaxed">{feature}</p>
                         </motion.div>
                       ))}
                     </div>
                   </CardContent>
-                </Card>
+                </div>
 
                 {/* Business Model */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <Card className="border-0 shadow-xl bg-gradient-to-br from-blue-50 to-blue-100">
+                  <div className="card-premium bg-gradient-to-br from-blue-50 to-blue-100">
                     <CardHeader className="pb-6">
                       <CardTitle className="flex items-center space-x-2 text-blue-700">
                         <Users className="h-6 w-6" />
@@ -281,9 +309,9 @@ export function CreatePitch() {
                     <CardContent>
                       <p className="text-blue-800 leading-relaxed">{generatedPitch.target_users}</p>
                     </CardContent>
-                  </Card>
+                  </div>
 
-                  <Card className="border-0 shadow-xl bg-gradient-to-br from-emerald-50 to-emerald-100">
+                  <div className="card-premium bg-gradient-to-br from-emerald-50 to-emerald-100">
                     <CardHeader className="pb-6">
                       <CardTitle className="flex items-center space-x-2 text-emerald-700">
                         <DollarSign className="h-6 w-6" />
@@ -293,9 +321,9 @@ export function CreatePitch() {
                     <CardContent>
                       <p className="text-emerald-800 leading-relaxed">{generatedPitch.monetization}</p>
                     </CardContent>
-                  </Card>
+                  </div>
 
-                  <Card className="border-0 shadow-xl bg-gradient-to-br from-purple-50 to-purple-100">
+                  <div className="card-premium bg-gradient-to-br from-purple-50 to-purple-100">
                     <CardHeader className="pb-6">
                       <CardTitle className="flex items-center space-x-2 text-purple-700">
                         <TrendingUp className="h-6 w-6" />
@@ -305,11 +333,11 @@ export function CreatePitch() {
                     <CardContent>
                       <p className="text-purple-800 leading-relaxed">{generatedPitch.market_size}</p>
                     </CardContent>
-                  </Card>
+                  </div>
                 </div>
 
                 {/* Social Proof */}
-                <Card className="border-0 shadow-xl bg-white">
+                <div className="card-premium">
                   <CardHeader className="pb-6">
                     <CardTitle className="flex items-center space-x-2 text-2xl">
                       <Star className="h-6 w-6 text-yellow-500" />
@@ -334,19 +362,28 @@ export function CreatePitch() {
                               <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                             ))}
                           </div>
-                          <p className="text-slate-600 italic mb-4 leading-relaxed">"{testimonial.quote}"</p>
+                          <p className="text-muted-foreground italic mb-4 leading-relaxed">"{testimonial.quote}"</p>
                           <div>
-                            <p className="font-bold text-slate-900">{testimonial.name}</p>
-                            <p className="text-sm text-slate-500">{testimonial.role}</p>
+                            <p className="font-bold text-foreground">{testimonial.name}</p>
+                            <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                           </div>
                         </motion.div>
                       ))}
                     </div>
                   </CardContent>
-                </Card>
+                </div>
+
+                {/* Voice Pitch Player */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <VoicePlayer text={generatedPitch.voice_pitch} />
+                </motion.div>
 
                 {/* Competition Analysis */}
-                <Card className="border-0 shadow-xl bg-white">
+                <div className="card-premium">
                   <CardHeader className="pb-6">
                     <CardTitle className="text-2xl">Competitive Landscape</CardTitle>
                     <CardDescription className="text-lg">
@@ -354,9 +391,9 @@ export function CreatePitch() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-slate-700 leading-relaxed text-lg">{generatedPitch.competition}</p>
+                    <p className="text-foreground leading-relaxed text-lg">{generatedPitch.competition}</p>
                   </CardContent>
-                </Card>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
