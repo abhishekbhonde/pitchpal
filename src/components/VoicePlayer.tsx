@@ -6,7 +6,7 @@ import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Play, Pause, Volume2, VolumeX, Download, Settings, ChevronDown, Mic, Sparkles, Waveform } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Download, Settings, ChevronDown, Mic, Sparkles, AudioWaveform as Waveform } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { elevenLabsClient, type ElevenLabsVoice, type ElevenLabsConfig } from '@/lib/elevenlabsClient';
 import { toast } from 'sonner';
