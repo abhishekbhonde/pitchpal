@@ -120,7 +120,7 @@ export function Navbar() {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost\" className="relative h-10 w-10 rounded-full ring-2 ring-border hover:ring-primary/50 transition-all duration-200">
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full ring-2 ring-border hover:ring-primary/50 transition-all duration-200">
                     <Avatar className="h-10 w-10">
                       <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold">
                         {getInitials(user.email || '')}
