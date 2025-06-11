@@ -209,7 +209,20 @@ export function Navbar() {
               className="lg:hidden border-t border-border/50 py-4 bg-background/95 backdrop-blur-sm"
             >
               <div className="flex flex-col space-y-2">
-                {[...navItems, ...(user ? userNavItems : [])].map((item) => (
+                {/* Regular nav items */}
+                {navItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.path}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center space-x-3 px-4 py-3 text-base font-medium rounded-lg transition-colors duration-200 text-foreground/80 hover:text-foreground hover:bg-muted/50"
+                  >
+                    <span>{item.name}</span>
+                  </Link>
+                ))}
+                
+                {/* User nav items (if logged in) */}
+                {user && userNavItems.map((item) => (
                   <Link
                     key={item.name}
                     to={item.path}
@@ -220,11 +233,12 @@ export function Navbar() {
                         : 'text-foreground/80 hover:text-foreground hover:bg-muted/50'
                     }`}
                   >
-                    {userNavItems.find(navItem => navItem.name === item.name)?.icon}
+                    {item.icon}
                     <span>{item.name}</span>
                   </Link>
                 ))}
                 
+                {/* Auth section for mobile */}
                 {user ? (
                   <div className="px-4 py-2 border-t border-border/50 mt-2">
                     <div className="flex items-center space-x-3 mb-4 p-3 bg-muted/50 rounded-lg">
@@ -238,6 +252,27 @@ export function Navbar() {
                         <p className="text-xs text-muted-foreground">{user.email}</p>
                       </div>
                     </div>
+                    
+                    {/* Mobile user menu items */}
+                    <div className="space-y-2 mb-4">
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center space-x-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 text-foreground/80 hover:text-foreground hover:bg-muted/50"
+                      >
+                        <User className="h-4 w-4" />
+                        <span>Profile</span>
+                      </Link>
+                      <Link
+                        to="/settings"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center space-x-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 text-foreground/80 hover:text-foreground hover:bg-muted/50"
+                      >
+                        <Settings className="h-4 w-4" />
+                        <span>Settings</span>
+                      </Link>
+                    </div>
+                    
                     <Button
                       onClick={() => {
                         handleSignOut();
