@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Zap, Brain, Mic, CheckCircle, Star, Users, TrendingUp, Play, Clock, Target, BarChart3, Lightbulb, Rocket, FileText, PresentationChart } from 'lucide-react';
+import { ArrowRight, Zap, Brain, Mic, CheckCircle, Star, Users, TrendingUp, Play, Clock, Target, BarChart3, Lightbulb, Rocket, FileText, Presentation as PresentationChart } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export function LandingPage() {
