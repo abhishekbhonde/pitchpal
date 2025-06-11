@@ -131,7 +131,7 @@ export function LandingPage() {
               </Badge>
             </motion.div>
             
-            {/* Main Headline with Animated Text */}
+            {/* Main Headline - Simple without animation */}
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -139,15 +139,8 @@ export function LandingPage() {
               className="text-4xl sm:text-5xl lg:text-7xl font-bold text-slate-900 mb-6 leading-tight"
             >
               Turn Your Startup Idea Into
-              <span className="block">
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                  className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent bg-300% animate-pulse"
-                >
-                  Investor-Ready Pitches
-                </motion.span>
+              <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Investor-Ready Pitches
               </span>
             </motion.h1>
             
