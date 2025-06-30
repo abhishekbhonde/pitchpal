@@ -1,4 +1,4 @@
-import { Github, Twitter, Linkedin, Mail } from "lucide-react";
+import { Github, Twitter, Linkedin, Mail, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function Footer() {
@@ -52,6 +52,20 @@ export function Footer() {
               Transform your startup ideas into investor-ready pitch decks with the power of AI. 
               Join thousands of successful entrepreneurs.
             </p>
+            
+            {/* Built with Bolt.new Badge */}
+            <div className="mb-6">
+              <a
+                href="https://bolt.new"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                <Zap className="h-4 w-4" />
+                <span>Built with Bolt.new</span>
+              </a>
+            </div>
+            
             <div className="flex space-x-4">
               <a
                 href="https://github.com/abhishekbhonde/pitchpal"
