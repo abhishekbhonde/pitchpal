@@ -29,16 +29,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   global: {
     headers: {
       'X-Client-Info': 'pitchpal-web'
-    },
-    fetch: (url, options = {}) => {
-      return fetch(url, {
-        ...options,
-        headers: {
-          ...options.headers,
-          'Access-Control-Allow-Origin': '*',
-        },
-      });
-    },
+    }
   },
   db: {
     schema: 'public'
