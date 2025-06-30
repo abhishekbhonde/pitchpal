@@ -113,6 +113,19 @@ export function Navbar() {
                 ))}
               </>
             )}
+
+            {/* Built with Bolt.new Badge */}
+            <motion.a
+              href="https://bolt.new"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="ml-4 inline-flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
+            >
+              <Zap className="h-3 w-3" />
+              <span>Built with Bolt.new</span>
+            </motion.a>
           </div>
 
           {/* Auth Section */}
@@ -237,6 +250,20 @@ export function Navbar() {
                     <span>{item.name}</span>
                   </Link>
                 ))}
+
+                {/* Built with Bolt.new Badge - Mobile */}
+                <div className="px-4 py-2">
+                  <a
+                    href="https://bolt.new"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsOpen(false)}
+                    className="inline-flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg w-full justify-center"
+                  >
+                    <Zap className="h-4 w-4" />
+                    <span>Built with Bolt.new</span>
+                  </a>
+                </div>
                 
                 {/* Auth section for mobile */}
                 {user ? (
