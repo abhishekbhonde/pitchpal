@@ -187,7 +187,7 @@ export function LandingPage() {
               <Button asChild size="lg" className="btn-premium px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl group">
                 <Link to="/create">
                   <Rocket className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                  Create Your Pitch Now
+                  Try Demo Now
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
@@ -402,18 +402,18 @@ export function LandingPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">
-              Ready to Create Your
-              <span className="block">Winning Pitch?</span>
+              Ready to Experience
+              <span className="block">AI-Powered Pitch Creation?</span>
             </h2>
             <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Join 10,000+ entrepreneurs who've turned their ideas into funded startups. 
-              Create your professional pitch deck in under 10 minutes.
+              Try our demo and see how AI can transform your startup ideas into professional, 
+              investor-ready pitch decks in minutes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Button asChild size="lg" className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 group">
                 <Link to="/create">
                   <Rocket className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                  Start Creating Now - Free
+                  Try Demo Now - Free
                   <Zap className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                 </Link>
               </Button>
@@ -421,7 +421,7 @@ export function LandingPage() {
             
             <div className="text-center">
               <p className="text-blue-100 text-sm">
-                ✓ No credit card required ✓ Create unlimited pitches ✓ Professional results in minutes
+                ✓ No sign-up required ✓ Full feature access ✓ Professional results in minutes
               </p>
             </div>
           </motion.div>

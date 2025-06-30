@@ -8,19 +8,15 @@ import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { VoicePlayer } from '@/components/VoicePlayer';
 import { generatePitchFromIdea } from '@/lib/mockPitchGenerator';
-import { savePitchToSupabase } from '@/lib/supabasePitches';
 import { GeneratedPitch } from '@/types/pitch';
-import { useAuth } from '@/contexts/AuthContext';
-import { Sparkles, Lightbulb, Target, Users, DollarSign, Save, Brain, Zap, TrendingUp, Star, Mic, Volume2 } from 'lucide-react';
+import { Sparkles, Lightbulb, Target, Users, DollarSign, Brain, Zap, TrendingUp, Star, Mic } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
 export function CreatePitch() {
   const [idea, setIdea] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const [generatedPitch, setGeneratedPitch] = useState<GeneratedPitch | null>(null);
-  const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleGenerate = async () => {
@@ -38,22 +34,6 @@ export function CreatePitch() {
       toast.error('Failed to generate pitch. Please try again.');
     } finally {
       setIsGenerating(false);
-    }
-  };
-
-  const handleSave = async () => {
-    if (!generatedPitch || !user) return;
-
-    setIsSaving(true);
-    try {
-      const result = await savePitchToSupabase(generatedPitch, user.email!);
-      if (result.success) {
-        navigate('/dashboard');
-      }
-    } catch (error) {
-      toast.error('Failed to save pitch. Please try again.');
-    } finally {
-      setIsSaving(false);
     }
   };
 
@@ -81,7 +61,7 @@ export function CreatePitch() {
               className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-semibold mb-6 shadow-lg"
             >
               <Brain className="h-4 w-4" />
-              <span>AI-Powered Pitch Generation</span>
+              <span>AI-Powered Pitch Generation Demo</span>
             </motion.div>
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
@@ -182,7 +162,7 @@ export function CreatePitch() {
                 >
                   {isGenerating ? (
                     <div className="flex items-center space-x-3">
-                      <LoadingSpinner text="\" size="sm" />
+                      <LoadingSpinner text="" size="sm" />
                       <span>Generating your pitch...</span>
                     </div>
                   ) : (
@@ -216,23 +196,6 @@ export function CreatePitch() {
                         <p className="text-blue-100 leading-relaxed text-lg">{generatedPitch.hero_section.subtext}</p>
                       </div>
                       <div className="flex flex-col space-y-3 w-full lg:w-auto">
-                        <Button
-                          onClick={handleSave}
-                          disabled={isSaving}
-                          className="bg-white text-purple-600 hover:bg-gray-100 py-3 px-6 font-semibold"
-                        >
-                          {isSaving ? (
-                            <div className="flex items-center space-x-2">
-                              <LoadingSpinner text="\" size="sm" />
-                              <span>Saving...</span>
-                            </div>
-                          ) : (
-                            <div className="flex items-center space-x-2">
-                              <Save className="h-5 w-5" />
-                              <span>Save Pitch</span>
-                            </div>
-                          )}
-                        </Button>
                         <Badge className="bg-emerald-500 text-white border-0 py-2 px-4 text-center">
                           {generatedPitch.hero_section.call_to_action}
                         </Badge>

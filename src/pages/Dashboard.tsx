@@ -1,37 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PitchCard } from '@/components/PitchCard';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-import { Plus, FileText, Calendar, TrendingUp, Zap, BarChart3, Users, DollarSign, Target, Sparkles, Clock, Award } from 'lucide-react';
+import { Plus, FileText, Calendar, TrendingUp, Zap, BarChart3, Users, Target, Sparkles, Clock, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { SavedPitch } from '@/types/pitch';
-import { useAuth } from '@/contexts/AuthContext';
-import { fetchUserPitches } from '@/lib/supabasePitches';
 import { motion } from 'framer-motion';
 
 export function Dashboard() {
-  const [pitches, setPitches] = useState<SavedPitch[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const loadPitches = async () => {
-      if (user?.email) {
-        setLoading(true);
-        const userPitches = await fetchUserPitches(user.email);
-        setPitches(userPitches);
-        setLoading(false);
-      }
-    };
-
-    loadPitches();
-  }, [user]);
-
+  // Mock data for demo purposes
   const stats = [
     {
-      title: 'Total Pitches',
-      value: pitches.length,
+      title: 'Demo Pitches',
+      value: 5,
       icon: <FileText className="h-6 w-6" />,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
@@ -41,12 +23,7 @@ export function Dashboard() {
     },
     {
       title: 'This Month',
-      value: pitches.filter(p => {
-        const createdDate = new Date(p.created_at);
-        const currentDate = new Date();
-        return createdDate.getMonth() === currentDate.getMonth() && 
-               createdDate.getFullYear() === currentDate.getFullYear();
-      }).length,
+      value: 3,
       icon: <Calendar className="h-6 w-6" />,
       color: 'text-emerald-600',
       bgColor: 'bg-emerald-50',
@@ -56,7 +33,7 @@ export function Dashboard() {
     },
     {
       title: 'Avg. Features',
-      value: pitches.length > 0 ? Math.round(pitches.reduce((acc, p) => acc + p.features.length, 0) / pitches.length) : 0,
+      value: 5,
       icon: <BarChart3 className="h-6 w-6" />,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
@@ -85,25 +62,25 @@ export function Dashboard() {
       href: '/create'
     },
     {
-      title: 'Analytics',
-      description: 'Track pitch performance',
-      icon: <BarChart3 className="h-6 w-6" />,
-      gradient: 'from-emerald-500 to-emerald-600',
-      href: '/analytics'
-    },
-    {
       title: 'Templates',
       description: 'Browse pitch templates',
       icon: <Target className="h-6 w-6" />,
       gradient: 'from-purple-500 to-purple-600',
       href: '/templates'
+    },
+    {
+      title: 'About Project',
+      description: 'Learn about this demo',
+      icon: <BarChart3 className="h-6 w-6" />,
+      gradient: 'from-emerald-500 to-emerald-600',
+      href: '/about'
     }
   ];
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center">
-        <LoadingSpinner text="Loading your pitches...\" size="lg" />
+        <LoadingSpinner text="Loading dashboard..." size="lg" />
       </div>
     );
   }
@@ -125,7 +102,7 @@ export function Dashboard() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3"
               >
-                Welcome back, {user?.user_metadata?.full_name || 'Entrepreneur'}
+                Welcome to PitchPal Demo
               </motion.h1>
               <motion.p 
                 initial={{ opacity: 0, x: -20 }}
@@ -133,7 +110,7 @@ export function Dashboard() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-xl text-muted-foreground leading-relaxed"
               >
-                Manage your AI-generated pitch decks and track your startup journey
+                Experience AI-powered pitch deck generation and explore the platform features
               </motion.p>
             </div>
             <motion.div
@@ -144,7 +121,7 @@ export function Dashboard() {
               <Button asChild className="btn-premium px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl">
                 <Link to="/create">
                   <Plus className="h-5 w-5 mr-2" />
-                  Create New Pitch
+                  Create Demo Pitch
                 </Link>
               </Button>
             </motion.div>
@@ -213,78 +190,43 @@ export function Dashboard() {
             ))}
           </div>
 
-          {/* Pitches Section */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-8">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-              >
-                <h2 className="text-2xl lg:text-3xl font-bold text-foreground flex items-center">
-                  <Sparkles className="h-8 w-8 mr-3 text-primary" />
-                  Your Pitch Decks
-                </h2>
-                <p className="text-muted-foreground mt-2">Manage and track your AI-generated presentations</p>
-              </motion.div>
-              {pitches.length > 0 && (
+          {/* Demo Information */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+          >
+            <div className="card-premium">
+              <CardContent className="p-12 lg:p-16 text-center">
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                   transition={{ duration: 0.6, delay: 0.8 }}
+                  className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
                 >
-                  <Button variant="outline" className="border-2">
-                    View All
-                  </Button>
+                  <Sparkles className="h-10 w-10 text-white" />
                 </motion.div>
-              )}
-            </div>
-
-            {pitches.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                {pitches.map((pitch, index) => (
-                  <PitchCard key={pitch.id} pitch={pitch} index={index} />
-                ))}
-              </div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.9 }}
-              >
-                <div className="card-premium">
-                  <CardContent className="p-12 lg:p-16 text-center">
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.6, delay: 1 }}
-                      className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
-                    >
-                      <FileText className="h-10 w-10 text-white" />
-                    </motion.div>
-                    <CardTitle className="text-2xl lg:text-3xl font-bold text-foreground mb-4">
-                      Ready to Create Your First Pitch?
-                    </CardTitle>
-                    <CardDescription className="text-muted-foreground mb-8 max-w-md mx-auto text-lg leading-relaxed">
-                      Transform your startup idea into a professional, investor-ready pitch deck 
-                      with the power of AI. Get started in just a few clicks.
-                    </CardDescription>
-                    <div className="space-y-4">
-                      <Button asChild className="btn-premium px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl">
-                        <Link to="/create">
-                          <Plus className="h-5 w-5 mr-2" />
-                          Create Your First Pitch
-                        </Link>
-                      </Button>
-                      <p className="text-sm text-muted-foreground">
-                        No credit card required • Generate unlimited pitches
-                      </p>
-                    </div>
-                  </CardContent>
+                <CardTitle className="text-2xl lg:text-3xl font-bold text-foreground mb-4">
+                  Experience AI-Powered Pitch Creation
+                </CardTitle>
+                <CardDescription className="text-muted-foreground mb-8 max-w-md mx-auto text-lg leading-relaxed">
+                  This is a demonstration of PitchPal's capabilities. Try creating a pitch to see 
+                  how AI can transform your startup ideas into professional presentations.
+                </CardDescription>
+                <div className="space-y-4">
+                  <Button asChild className="btn-premium px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl">
+                    <Link to="/create">
+                      <Zap className="h-5 w-5 mr-2" />
+                      Try the AI Generator
+                    </Link>
+                  </Button>
+                  <p className="text-sm text-muted-foreground">
+                    No sign-up required • Experience full functionality • Built with React & AI
+                  </p>
                 </div>
-              </motion.div>
-            )}
-          </div>
+              </CardContent>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </div>
